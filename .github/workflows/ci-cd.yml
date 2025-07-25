@@ -31,7 +31,7 @@ jobs:
       run: bandit -r . -f json -o bandit-report.json || true
     
     - name: Upload Bandit Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: bandit-security-report
         path: bandit-report.json
@@ -126,7 +126,7 @@ jobs:
         python -m pytest ui_tests.py -v --html=ui-test-report.html --self-contained-html
     
     - name: Upload UI Test Report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       if: always()
       with:
         name: ui-test-report
@@ -152,7 +152,7 @@ jobs:
         output: 'trivy-results.sarif'
     
     - name: Upload Trivy scan results
-      uses: github/codeql-action/upload-sarif@v2
+      uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
