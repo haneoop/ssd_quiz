@@ -24,6 +24,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install safety bandit
         pip install -r requirements.txt
+
+    - name: Install Safety
+      run: pip install "safety==2.3.5"
     
     - name: Run Safety Check (Dependency Vulnerabilities)
       run: safety check
