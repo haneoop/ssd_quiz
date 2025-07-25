@@ -186,21 +186,46 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Check for JavaScript files
+        id: check-js
+        run: |
+          if find . -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" | head -1 | grep -q .; then
+            echo "js_files=true" >> $GITHUB_OUTPUT
+          else
+            echo "js_files=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Set up Node.js
+        if: steps.check-js.outputs.js_files == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      - name: Initialize package.json if needed
+        if: steps.check-js.outputs.js_files == 'true'
+        run: |
+          if [ ! -f package.json ]; then
+            npm init -y
+            npm install eslint eslint-plugin-security --save-dev
+          fi
+
       - name: Install dependencies
+        if: steps.check-js.outputs.js_files == 'true'
         run: |
           if [ -f package-lock.json ]; then npm ci; else npm install; fi
 
-      - name: Run ESLint with security plugin and save report
+      - name: Run ESLint with security plugin
+        if: steps.check-js.outputs.js_files == 'true'
         run: |
           npx eslint . --ext .js,.jsx,.ts,.tsx -f html -o eslint-report.html || true
 
       - name: Upload ESLint Report
+        if: steps.check-js.outputs.js_files == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: eslint-report
           path: eslint-report.html
+
+      - name: Skip ESLint
+        if: steps.check-js.outputs.js_files == 'false'
+        run: echo "No JavaScript files found, skipping ESLint scan"
