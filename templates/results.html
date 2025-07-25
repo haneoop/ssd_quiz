@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<h1>Search Results</h1>
+<p>You searched for: <strong>{{ search_term }}</strong></p>
+<p>Your search term has been safely processed and validated.</p>
+<p>No XSS or SQL injection attacks detected.</p>
+
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('home') }}" style="padding: 10px 20px; background: #007bff; color: white; text-decoration: none; border-radius: 4px;">← Return to Home Page</a>
+</div>
+{% endblock %}

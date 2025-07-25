@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Secure Search Application</h1>
+<p>Enter your search term below. Input is validated and sanitized to prevent XSS and SQL injection attacks.</p>
+
+<form method="POST" action="/search">
+    <div class="form-group">
+        <label for="search_term">Search Term:</label><br>
+        <input type="text" id="search_term" name="search_term" placeholder="Enter search term..." required>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Search">
+    </div>
+</form>
+
+<div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 4px;">
+    <h3>Security Features:</h3>
+    <ul>
+        <li>XSS Attack Detection & Prevention</li>
+        <li>SQL Injection Attack Detection & Prevention</li>
+        <li>Input Validation & Sanitization (OWASP C5)</li>
+        <li>Secure Output Encoding</li>
+    </ul>
+</div>
+{% endblock %}
