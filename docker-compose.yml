@@ -28,7 +28,7 @@ services:
     volumes:
       - ./git_repos:/git
     command: >
-      sh -c "apk add --no-cache git &&
+      sh -c "apk add --no-cache git git-daemon &&
              git config --global user.name 'Muhammad Hanif Bin Shaiful Bhari' &&
              git config --global user.email '2301872@sit.singaporetech.edu.sg' &&
              mkdir -p /git &&
