@@ -66,16 +66,30 @@ class TestWebApplicationUI:
         """Test valid input goes to results page"""
         driver.get("http://localhost")
         
+        # Wait for page to fully load
+        WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.ID, "search_term"))
+        )
+        
         search_input = driver.find_element(By.ID, "search_term")
+        search_input.clear()  # Clear any existing text
         search_input.send_keys("hello world")
         
-        submit_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit']")
-        submit_button.click()
+        # Wait a moment for the input to be processed
+        time.sleep(0.5)
         
-        # Should go to results page
+        # Find and click the submit button
+        submit_button = driver.find_element(By.CSS_SELECTOR, "input[type='submit']")
+        
+        # Use JavaScript click as alternative (sometimes more reliable)
+        driver.execute_script("arguments[0].click();", submit_button)
+        
+        # Wait for URL change or navigation
         WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "h1"))
+            lambda d: d.current_url != "http://localhost/" and d.current_url != "http://localhost"
         )
+        
+        # Now check for results page content
         assert "Search Results" in driver.page_source
         assert "hello world" in driver.page_source
         assert "Return to Home Page" in driver.page_source
